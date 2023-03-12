@@ -6,23 +6,37 @@ class User(AbstractUser):
     username = models.CharField(
         max_length=100,
         unique=True,
+        verbose_name='Имя аккаунта пользователя'
     )
     email = models.EmailField(
         max_length=250,
         unique=True,
-        verbose_name='Электронная почта'
+        verbose_name='Электронная почта пользователя'
     )
     first_name = models.CharField(
         max_length=200,
-        verbose_name='Имя'
+        verbose_name='Имя пользователя'
     )
     last_name = models.CharField(
         max_length=200,
-        verbose_name='Фамилия'
+        verbose_name='Фамилия пользователя'
+    )
+    password = models.CharField(
+        verbose_name='Пароль пользователя',
+        max_length=100,
+    )
+    is_active = models.BooleanField(
+        verbose_name='Активен ли пользователь',
+        default=True,
     )
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
+    REQUIRED_FIELDS = [
+        'username',
+        'first_name',
+        'last_name',
+        'password'
+    ]
 
     class Meta:
         ordering = ['-id']
@@ -33,17 +47,17 @@ class User(AbstractUser):
         return self.username
 
 
-class Follow(models.Model):
+class Subscriptions(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='follower',
+        related_name='subscriptions',
         verbose_name='Подписчик'
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='following',
+        related_name='subscribers',
         verbose_name='Автор'
     )
 
@@ -54,7 +68,7 @@ class Follow(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'author'],
-                name='unique_follow_user_pair'
+                name='unique_subscribe_user_pair'
             )
         ]
 
