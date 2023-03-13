@@ -1,11 +1,6 @@
 version: '3.3'
 services:
 
-  frontend:
-    image: bazaz/foodgram_frontend:latest
-    volumes:
-      - ./frontend/:/app/result_build/
-
   db:
     image: postgres:13.0-alpine
     volumes:
@@ -24,16 +19,23 @@ services:
     env_file:
       - ./.env
 
+  frontend:
+    image: bazaz/foodgram_frontend:latest
+    volumes:
+      - ./frontend/:/app/result_build/
+    depends_on:
+      - backend
+
   nginx:
     image: nginx:1.23.3-alpine
     ports:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/build:/usr/share/nginx/html/
+      - ./docs/:/usr/share/nginx/html/api/docs/
       - static_vol:/var/html/static/
       - media_vol:/var/html/media/
-      - ../frontend/build:/usr/share/nginx/html/
-      - ./docs/:/usr/share/nginx/html/api/docs/
     depends_on:
       - backend
 
