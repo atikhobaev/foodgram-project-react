@@ -14,6 +14,7 @@ from users.serializers import UserRecipeSerializer
 
 from .filters import RecipeFilter
 from .paginators import PageLimitPagination
+from .permissions import IsAuthorOrReadOnly
 from .serializers import RecipeSerializer, RecipeSerializerCreateUpdate
 
 
@@ -21,7 +22,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     pagination_class = PageLimitPagination
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthorOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
 
