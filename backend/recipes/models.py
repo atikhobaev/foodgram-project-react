@@ -75,7 +75,7 @@ class RecipeIncludeIngredients(models.Model):
         verbose_name='Количество ингредиента',
         validators=[
             MinValueValidator(1, 'Минимум один ингридиент'),
-            MaxValueValidator(100, 'Максимум сто ингридиентов'),
+            MaxValueValidator(32000, 'Максимальное кол-во ингридиента 32000'),
         ]
     )
 

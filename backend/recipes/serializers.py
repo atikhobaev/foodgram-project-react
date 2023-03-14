@@ -122,6 +122,13 @@ class RecipeSerializerCreateUpdate(RecipeSerializer):
     def validate_ingredients(self, value):
         if not value:
             raise exceptions.ValidationError('Минимум один ингридиент')
+
+        for item in value:
+            amount = item['amount']
+            if amount > 32000:
+                raise exceptions.ValidationError(
+                    'Максимальное кол-во ингридиента 32000')
+
         ingredients = [item['id'] for item in value]
         for ingredient in ingredients:
             if ingredients.count(ingredient) > 1:
