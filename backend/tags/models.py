@@ -1,3 +1,4 @@
+from django.core import validators
 from django.db import models
 
 
@@ -11,7 +12,11 @@ class Tag(models.Model):
     color = models.CharField(
         max_length=7,
         verbose_name='Цвет тега в hex формате',
-        unique=True
+        unique=True,
+        validators=[validators.RegexValidator(
+            r"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+            "Цвет в hex формате, например #1AFFa1",
+        )],
     )
     slug = models.SlugField(
         max_length=50,
