@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 from ingredients.models import Ingredient
@@ -74,7 +74,8 @@ class RecipeIncludeIngredients(models.Model):
         default=1,
         verbose_name='Количество ингредиента',
         validators=[
-            MinValueValidator(1, 'Минимум один ингридиент')
+            MinValueValidator(1, 'Минимум один ингридиент'),
+            MaxValueValidator(100, 'Максимум сто ингридиентов'),            
         ]
     )
 
